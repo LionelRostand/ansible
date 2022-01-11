@@ -1,0 +1,17 @@
+pipeline {
+  agent any
+  stages {
+    stage('Deploy to Site 2') {
+            steps {
+                echo '> Deploying to Site 2 ...'
+                ansiblePlaybook (
+                    installation: 'Ansible on Mac',
+                    playbook: '${WORKSPACE}/public_keys/push-key.yml',
+                    inventory: '~/ansible/inventories/site2.yml',
+                    vaultCredentialsId: 'ansible-vault-pass',
+                    extraVars: [authorized_keys_src: "$WORKSPACE/public_keys/authorized_keys",]
+                )
+                echo '> Deployed to Site 2 ...'
+            }
+        }
+         
